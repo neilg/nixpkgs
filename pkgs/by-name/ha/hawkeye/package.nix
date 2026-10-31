@@ -3,24 +3,34 @@
   rustPackages,
   fetchFromGitHub,
   pkg-config,
+  gitMinimal,
 }:
 
 rustPackages.rustPlatform.buildRustPackage (finalAttrs: {
   pname = "hawkeye";
-  version = "6.5.1";
+  version = "7.2.0";
 
   src = fetchFromGitHub {
     owner = "korandoru";
     repo = "hawkeye";
     tag = "v${finalAttrs.version}";
-    hash = "sha256-TBWPpfSr5ONr7HzEzPr3TbQo3fl4Szj/7cl3NafyYms=";
+    hash = "sha256-OQuSxdV2ESlLtcmAMa9WDj1r+pyAgiBuQeWnm3RRsfw=";
   };
 
-  cargoHash = "sha256-5fUNyNYm0p44Xs4mK+nhrsUrA3LJkaO8gZrmXyRqiSo=";
+  buildAndTestSubdir = "hawkeye";
+
+  cargoHash = "sha256-TB+SUobB7iwW85BPDLAfq9D6pl/oX7ub9WyG9PQi85w=";
 
   nativeBuildInputs = [
     pkg-config
   ];
+
+  nativeCheckInputs = [
+    gitMinimal
+  ];
+
+  # The tests assert on warnings, so we need to make them visible.
+  logLevel = "warn";
 
   meta = {
     homepage = "https://github.com/korandoru/hawkeye";
